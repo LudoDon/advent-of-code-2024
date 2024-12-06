@@ -20,7 +20,7 @@ Part I: just went for a regex with capturing groups. Hadn't done these in python
 
 Part II: although a linear scan through the string now seemed the smarter (certainly faster) move, it seemed more interesting to expand on my part I solution: 3 regexes. Now I needed not just the matches, but also their string-index. Googled to find `re.finditer` which returns a so-called `Matching-object` which has `span/start/end`. First started to write a (manual) merge of the three lists of indexes, but resorted to iterating the `mult`-list, getting the maximum of smaller indexes of enable/disable-lists. This feels like O(n^2) and could easily be optimized...but it does the job.
 
-# day 04
+### day 04
 
 Part I: the naive solution: just get all possible lines (horizontal,vertical, diagonal in both directions) and use a regex to find matches in each line. It felt a bit tedious to get the diagonal lines (bookkeeping of indices), and got a flashback to [exercise percolation](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php) for the Coursera algorithms course.
 
