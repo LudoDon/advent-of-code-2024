@@ -25,3 +25,9 @@ Part II: although a linear scan through the string now seemed the smarter (certa
 Part I: the naive solution: just get all possible lines (horizontal,vertical, diagonal in both directions) and use a regex to find matches in each line. It felt a bit tedious to get the diagonal lines (bookkeeping of indices), and got a flashback to [exercise percolation](https://coursera.cs.princeton.edu/algs4/assignments/percolation/specification.php) for the Coursera algorithms course.
 
 Part II: feels easier than part I. Pondered to re-use part I by scanning only the diagonal lines and combining them on common 'A's. But the naive solution seemed much easier and faster: walk the grid, for each A just determine its cross en check if the cross-legs are both MAS or SAM.
+
+### day 04
+
+Part I: to save the relation (graph) in python it seems fit to use a dict with int-keys having int-valued set. It's unclear whether the relation is total order or merely a patial order, so I built a check for that while constructing. Turned out it is total, and the exercise is very easy using `sorted` with custom comparer-function.
+
+Part II: a one-liner, given our setup in part I.
