@@ -26,8 +26,16 @@ Part I: the naive solution: just get all possible lines (horizontal,vertical, di
 
 Part II: feels easier than part I. Pondered to re-use part I by scanning only the diagonal lines and combining them on common 'A's. But the naive solution seemed much easier and faster: walk the grid, for each A just determine its cross en check if the cross-legs are both MAS or SAM.
 
-### day 04
+### day 05
 
 Part I: to save the relation (graph) in python it seems fit to use a dict with int-keys having int-valued set. It's unclear whether the relation is total order or merely a patial order, so I built a check for that while constructing. Turned out it is total, and the exercise is very easy using `sorted` with custom comparer-function.
 
 Part II: a one-liner, given our setup in part I.
+
+### day 06
+
+Part I: a grid again! Time to abstract a grid object? Nah, not until the third time will we abstract a common pattern!
+
+Pretty straightforward while-loop, updating the grid while advancing a step.
+
+Part II:
