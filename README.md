@@ -40,3 +40,7 @@ Pretty straightforward while-loop, updating the grid while advancing a step.
 
 Part II: a loop is characterized by a coordinate which is visited twice in the same direction. Brute force: for each possible new obstruction, check if this yields a loop. This is the first puzzle where brute force is ... slow!
 A simple optimisation is: only try obstacles on the path of the original grid. This still leaves 2 minutes of calculation. Since I am already falling way behind schedule, I will leave at that.
+
+### day 07
+
+Part I: to get all possible operator combinations, I used python itertools `product`. To compute the expression left-to-right, a simple recurive function did the job. But the calculation is not fast...
