@@ -41,7 +41,7 @@ def pretty(r):
             s = s + r[row][col]
     return s
 
-def advanceInDirection(x,y,direction):
+def advanceInDirection(s,x,y,direction):
     if direction == 'N':
         f = lambda a,b: (a-1,b)
     elif direction == 'E':
@@ -71,13 +71,16 @@ def rotate(direction):
 
 def solvePartI():
     result = 1
+    s = copy(matrix, False)
+    visited = set()
     (x,y) = (startX,startY)
     s[x][y] = valueVisited
+    visited.add((x,y))
     direction = 'N'
     while(True):
-        (X,Y, value) = advanceInDirection(x,y,direction)
+        (X,Y, value) = advanceInDirection(s,x,y,direction)
         if value == valueOffGrid:
-            return result
+            return (result,visited)
         elif value == valueObstacle:
             direction = rotate(direction)  
         else:
@@ -85,19 +88,57 @@ def solvePartI():
                 result = result + 1
             (x,y) = (X,Y)
             s[X][Y] = valueVisited
-            #print(pretty(s))          
+            visited.add((x,y))
+            #print(pretty(s))      
 
-def copy(r):
+def solvePartII(visitedOriginalGrid):
+    result = 0
+    for (r,c) in visitedOriginalGrid:
+        if matrix[r][c] == '.': # only place a new obstacle at .
+            s = copy(matrix, False)
+            visited = copy(matrix,True)
+            if hasLoop(s,r,c, visited):
+                result = result + 1
+    return result
+
+def hasLoop(s,obstacleX,obstacleY,visited):
+    s[obstacleX][obstacleY] = valueObstacle
+    (x,y) = (startX,startY)
+    s[x][y] = valueVisited
+    direction = 'N'
+    visited[x][y].add(direction)
+
+    while(True):
+        (X,Y, value) = advanceInDirection(s,x,y,direction)
+        if value == valueOffGrid:
+            return False
+        elif value == valueObstacle:
+            direction = rotate(direction)
+            #print(pretty(s))            
+        else:
+            if direction in visited[X][Y]:
+                return True
+            (x,y) = (X,Y)
+            s[x][y] = valueVisited
+            visited[x][y].add(direction)
+            
+
+def copy(r, emptySetValue:bool):
     result = []
     for row in range(matrixNumberOfRows):
         resultRow = []
         for col in range(matrixNumberOfColumns):
-            resultRow.append(r[row][col])
+            if emptySetValue:
+                resultRow.append(set())
+            else:
+                resultRow.append(r[row][col])
         result.append(resultRow)
     return result
 
-(r,matrixNumberOfRows,matrixNumberOfColumns,startX,startY) = readData('06/input.txt')
-s = copy(r)
-resultI = solvePartI()
+(matrix,matrixNumberOfRows,matrixNumberOfColumns,startX,startY) = readData('06/input.txt')
+(resultI,visited) = solvePartI()
 print(resultI)
-print(pretty(s))
+
+resultII = solvePartII(visited)
+print(resultII)
+

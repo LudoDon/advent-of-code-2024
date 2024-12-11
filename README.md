@@ -38,4 +38,5 @@ Part I: a grid again! Time to abstract a grid object? Nah, not until the third t
 
 Pretty straightforward while-loop, updating the grid while advancing a step.
 
-Part II:
+Part II: a loop is characterized by a coordinate which is visited twice in the same direction. Brute force: for each possible new obstruction, check if this yields a loop. This is the first puzzle where brute force is ... slow!
+A simple optimisation is: only try obstacles on the path of the original grid. This still leaves 2 minutes of calculation. Since I am already falling way behind schedule, I will leave at that.
