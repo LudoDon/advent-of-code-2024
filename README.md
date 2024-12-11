@@ -46,3 +46,5 @@ A simple optimisation is: only try obstacles on the path of the original grid. T
 Part I: to get all possible operator combinations, I used python itertools `product`. To compute the expression left-to-right, a simple recurive function did the job. But the calculation is not fast...
 
 Part II: easy change, but it takes looooong to compute this part.
+
+A very good optimisation is to start at the end, recursively applying inverse operators: subtract,quotient,string-split. These operators decrease the running result, and short circuit: if running result is negative, stop. Also, if the quotient is not an integer, you stop that branch. 

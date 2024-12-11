@@ -29,40 +29,45 @@ def readData(filename):
             result.append((x,y))
     return result
 
-def getPossibleOperatorSets(operatorAtoms,l):
-    # yield all 2^l combinations of + and *
-    return list(product(operatorAtoms, repeat=l))
-
 def equationResult(abstractEquation,operatorAtoms):
     result, parts = abstractEquation
 
-    possibleOperatorSets = getPossibleOperatorSets(operatorAtoms,len(parts)-1)
-    for operators in possibleOperatorSets:
-        if isEquationSatisfied(result, parts, operators):
+    if isEquationSatisfied(result, parts, operatorAtoms):
             return result
     return 0
 
-def isEquationSatisfied(result, parts, operators):
-    return result == computeExpressionRecursive(parts,operators)
+def isEquationSatisfied(result, parts, operatorAtoms):
+    if addition in operatorAtoms and multiplication in operatorAtoms:
+        return isEquationSatisfiedAdditionMultiplication(result,parts, concatenation in operatorAtoms)
+    
+def isEquationSatisfiedAdditionMultiplication(result, parts, allowConcatenation):
 
-def computeExpressionRecursive( parts, operators):
-    if len(parts) < 2:
-        raise Exception
-    r = computeBasicExpression(parts[0], operators[0], parts[1])
-    if len(parts) > 2:
-        return computeExpressionRecursive([r] + parts[2:], operators[1:])
-    else:
-        return r
+    if len(parts) == 1:
+        return result == parts[0]
+    
+    # start at end, recursively apply inverse operators
+    diff = result - parts[-1]
+    if diff == 0:
+        return True
+    if diff > 0 and isEquationSatisfiedAdditionMultiplication(diff, parts[:-1],allowConcatenation):
+        return True
+    
+    if result % parts[-1] == 0:
+        quotient = result // parts[-1]
+        if quotient == 1:
+            return True
+        if isEquationSatisfiedAdditionMultiplication(quotient, parts[:-1], allowConcatenation):
+            return True
+            
+    if allowConcatenation:
+        lastPart = str(parts[-1])
+        resultString = str(result)
+        if resultString.endswith(lastPart):
+            beginning = int(resultString[0:len(resultString)-len(lastPart)])
+            if isEquationSatisfiedAdditionMultiplication(beginning, parts[:-1], allowConcatenation):
+                return True
 
-def computeBasicExpression( x, operator, y):
-    if operator == addition:
-        return x + y
-    elif operator == multiplication:
-        return x * y
-    elif operator == concatenation:
-        return int(str(x)+str(y))
-    else:
-        raise Exception
+    return False
 
 def countBoolean(b: bool):
     if b:
@@ -75,6 +80,6 @@ def solvePartI(data):
 def solvePartII(data):
     return sum(map(lambda e: equationResult(e,[addition, multiplication,concatenation]), data))
 
-data = readData('07/test-input.txt')
+data = readData('07/input.txt')
 executeAndTime(solvePartI,data)
 executeAndTime(solvePartII,data)
