@@ -44,3 +44,5 @@ A simple optimisation is: only try obstacles on the path of the original grid. T
 ### day 07
 
 Part I: to get all possible operator combinations, I used python itertools `product`. To compute the expression left-to-right, a simple recurive function did the job. But the calculation is not fast...
+
+Part II: easy change, but it takes looooong to compute this part.

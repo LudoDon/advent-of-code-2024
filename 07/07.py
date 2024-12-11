@@ -1,7 +1,21 @@
 from itertools import product
+import time
+from typing import Any, Callable
 
 addition = '+'
 multiplication = '*'
+concatenation = '|'
+
+
+def executeAndTime(f: Callable[..., Any], *args, **kwargs):
+    start = time.perf_counter()
+    result = f(*args, **kwargs)
+    end = time.perf_counter()
+    print('++++++++++++')
+    print('duration:')
+    print(end - start)
+    print('result:')
+    print(result)
 
 def readData(filename):
     result = []
@@ -15,14 +29,14 @@ def readData(filename):
             result.append((x,y))
     return result
 
-def getPossibleOperatorSets(l):
+def getPossibleOperatorSets(operatorAtoms,l):
     # yield all 2^l combinations of + and *
-    return list(product([addition, multiplication], repeat=l))
+    return list(product(operatorAtoms, repeat=l))
 
-def equationResult(abstractEquation):
+def equationResult(abstractEquation,operatorAtoms):
     result, parts = abstractEquation
 
-    possibleOperatorSets = getPossibleOperatorSets(len(parts)-1)
+    possibleOperatorSets = getPossibleOperatorSets(operatorAtoms,len(parts)-1)
     for operators in possibleOperatorSets:
         if isEquationSatisfied(result, parts, operators):
             return result
@@ -45,6 +59,8 @@ def computeBasicExpression( x, operator, y):
         return x + y
     elif operator == multiplication:
         return x * y
+    elif operator == concatenation:
+        return int(str(x)+str(y))
     else:
         raise Exception
 
@@ -54,8 +70,11 @@ def countBoolean(b: bool):
     return 0
 
 def solvePartI(data):
-    return sum(map(equationResult, data))
+    return sum(map(lambda e: equationResult(e,[addition, multiplication]), data))
 
-data = readData('07/input.txt')
-(resultI) = solvePartI(data)
-print(resultI)
+def solvePartII(data):
+    return sum(map(lambda e: equationResult(e,[addition, multiplication,concatenation]), data))
+
+data = readData('07/test-input.txt')
+executeAndTime(solvePartI,data)
+executeAndTime(solvePartII,data)
