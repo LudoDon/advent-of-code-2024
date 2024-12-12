@@ -48,3 +48,10 @@ Part I: to get all possible operator combinations, I used python itertools `prod
 Part II: easy change, but it takes looooong to compute this part.
 
 A very good optimisation is to start at the end, recursively applying inverse operators: subtract,quotient,string-split. These operators decrease the running result, and short circuit: if running result is negative, stop. Also, if the quotient is not an integer, you stop that branch. 
+
+### day 08
+
+Part I: gather all symbols (antennaTypes) in a dictionary, along with their coorinates. Use python `iterools.combinations` to get all distinct pairs, and easily calculate the coordinates on the line elements at distance 1.
+
+Part II: a simple while-loop to account for all distances on the grid.
+The only subtle change was to get the antennas themselves (start while-loop at 0 distance rather than 1).
